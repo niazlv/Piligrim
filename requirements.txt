@@ -1,0 +1,6 @@
+asyncpg
+aiogram
+environs
+psycopg2
+datetime
+requests
