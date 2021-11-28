@@ -43,14 +43,38 @@ async def ping(dp: Dispatcher):
 
             await get_pos_ping(vuz, inst, nap, form, cat, snls, main_id)
 
-            # Отправка
+            sr_num += 1
+        # Отправка
+        user_num = 1
+        break_check = 0
+        while True:
+            try:
+                user_id = str(await select_db("users", "user_num", "user_id", user_num))
+            except:
+                if break_check > 15:
+                    break
+                else:
+                    break_check += 1
+                    user_num += 1
+                    continue
+
+            break_check = 0
 
             podpis = int(await select_db("users", "user_id", "podpis", user_id))
             if podpis == 1:
+                await dp.bot.send_message(user_id, "📥Подписка")
                 counter_step = 0
                 step = int(await select_db("users", "user_id", "step", user_id))
-                await dp.bot.send_message(user_id, "📥Подписка")
                 while counter_step < step:
+                    info_id = str(counter_step) + '#' + user_id
+                    vuz = str(await select_db("info", "info_id", "vuz", info_id))
+                    inst = str(await select_db("info", "info_id", "inst", info_id))
+                    nap = str(await select_db("info", "info_id", "nap", info_id))
+                    form = str(await select_db("info", "info_id", "form", info_id))
+                    cat = str(await select_db("info", "info_id", "cat", info_id))
+
+                    main_id = vuz + '#' + inst + '#' + nap + '#' + form + '#' + cat + '#' + user_id
+
                     vuz_name = str(await select_db("main", "main_id", "vuz_name", main_id))
                     inst_name = str(await select_db("main", "main_id", "inst_name", main_id))
                     nap_name = str(await select_db("main", "main_id", "nap_name", main_id))
@@ -58,6 +82,7 @@ async def ping(dp: Dispatcher):
                     cat_name = str(await select_db("main", "main_id", "cat_name", main_id))
                     pos = str(await select_db("main", "main_id", "pos", main_id))
                     sogl_pos = str(await select_db("main", "main_id", "sogl_pos", main_id))
+                    max_sogl = str(await select_db("main", "main_id", "max_sogl", main_id))
 
                     await dp.bot.send_message(user_id, f"🔹ВУЗ: {vuz_name}\n"
                                                        f"🔹Институт/Факультет: {inst_name}\n"
@@ -65,10 +90,11 @@ async def ping(dp: Dispatcher):
                                                        f"🔹Форма обучения: {form_name}\n"
                                                        f"🔹Категория: {cat_name}\n"
                                                        f"🔸Позиция: {pos}\n"
-                                                       f"🔺Позиция среди Согласий: {sogl_pos}")
+                                                       f"🔺Позиция среди Согласий: {sogl_pos}/{max_sogl}")
 
                     counter_step += 1
-            sr_num += 1
+            user_num += 1
+
         await asyncio.sleep(30)
 
 # asyncio.run(ping())

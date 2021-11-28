@@ -29,6 +29,8 @@ async def mes_state(message: Message):
     # -----------------
 
     if message.text == "Получить данные📘":
+        await message.answer("❗️Если вы не видите какое-то ваше направление, то ваш ID абитуриента/СНИЛС отсутствует в списке участников")
+
         counter_step = 0
         step = int(await select_db("users", "user_id", "step", user_id))
         while counter_step < step:

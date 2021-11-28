@@ -75,6 +75,7 @@ async def get_pos(vuz, inst, nap, form, cat, snls, main_id, info_id):
     try:
         pos = int(await polz(snls, t))
     except:
+        await delete_db("main", "main_id", main_id)
         await delete_db("info", "info_id", info_id)
         check_pos = False
 
