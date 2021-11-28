@@ -5,6 +5,10 @@
 #Уставновка и запуск
 ```
 git clone
+```
+```
 sh docker_install.sh
+```
+```
 docker-compose up --build
 ```
